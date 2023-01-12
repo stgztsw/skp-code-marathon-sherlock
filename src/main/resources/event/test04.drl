@@ -1,0 +1,21 @@
+package event;
+import java.util.Date
+
+declare TestEvent
+    @role( event )
+    @expires(36h)
+    @timestamp( event_time.getTime() )
+    incident_code: Integer
+    product_id: String
+    event_time: java.util.Date
+    incident_partition: String
+    status: String
+end
+
+rule "no recover incident"
+    when
+        $fault:TestEvent( status == '1' ) from entry-point IncidentStream
+        not TestEvent( incident_code == $fault.incident_code, status == '2', this after[0s,10s] $fault ) from entry-point IncidentStream
+    then
+        System.out.println("no recover incident");
+end

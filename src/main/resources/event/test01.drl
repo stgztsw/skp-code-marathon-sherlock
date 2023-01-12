@@ -1,0 +1,30 @@
+package event;
+
+declare TestEvent
+    incident_code: String
+    product_id: String
+    event_time: java.util.Date
+    incident_partition: String
+end
+
+rule "no M1 testEvent"
+    when
+        not TestEvent(incident_partition == 'M1')
+    then
+        System.out.println("no M1 testEvent");
+end
+
+rule "at least one M1 testEvent"
+    when
+        exists TestEvent(incident_partition == 'M1')
+    then
+        System.out.println("at least one M1 testEvent");
+end
+
+rule "all the event is M1"
+    when
+        forall (TestEvent(incident_partition == 'M1'))
+    then
+        System.out.println("all the event is M1");
+end
+

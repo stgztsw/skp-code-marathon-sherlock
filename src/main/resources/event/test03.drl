@@ -1,0 +1,27 @@
+package event;
+import function me.sumithpuri.github.sherlock.util.Utility.helper;
+
+declare TestEvent
+    incident_code: Integer
+    product_id: String
+    event_time: java.util.Date
+    incident_partition: String
+end
+
+rule "min testEvent is 10001"
+    when
+        accumulate ( TestEvent($incidentCode: incident_code);
+                     $min: min($incidentCode);
+                     $min == 10001 )
+    then
+        System.out.println("min testEvent is 10001");
+end
+
+rule "max testEvent is 10003"
+    when
+        accumulate ( TestEvent($incidentCode: incident_code);
+                     $max: max($incidentCode);
+                     $max == 10003 )
+    then
+        System.out.println("max testEvent is 10003");
+end

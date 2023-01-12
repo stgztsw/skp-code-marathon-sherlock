@@ -1,0 +1,23 @@
+package event;
+import java.util.ArrayList
+
+declare TestEvent
+    incident_code: String
+    product_id: String
+    event_time: java.util.Date
+    incident_partition: String
+end
+
+rule "more than 3 M1 testEvent"
+    when
+        ArrayList( size >= 3 ) from collect( TestEvent( incident_partition == 'M1' ) )
+    then
+        System.out.println("more than 3 M1 testEvent");
+end
+
+rule "no more than 4 M1 testEvent"
+    when
+        not ArrayList( size >= 4 ) from collect( TestEvent( incident_partition == 'M1' ) )
+    then
+        System.out.println("no more than 4 M1 testEvent");
+end
